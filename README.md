@@ -3,7 +3,7 @@
 ---
 
 ## 📊 Dataset Description
-We provide several datasets used in the SSL-eKamba framework, which employs self-supervised learning for traffic accidents prediction. Collected from two public real-world sourcesn **[NYC](https://opendata.cityofnewyork.us/)** and **[Chicago](https://data.cityofchicago.org/browse?q=traffic&sortBy=relevance&pageSize=20)** these datasets are designed for spatiotemporal analysis and risk prediction tasks, with a detailed description including their structure, features, and associated metadata provided below.
+We provide several datasets used in the SSL-eKamba framework, which employs self-supervised learning for traffic accidents prediction. Collected from two public real-world sourcesn **[NYC](https://opendata.cityofnewyork.us/)** and **[Chicago](https://data.cityofchicago.org/browse?q=traffic&sortBy=relevance&pageSize=20)** these datasets are designed for spatiotemporal analysis and risk prediction tasks, with a detailed description including their structure, features, and Download Link below.
 ### Overview
 
 The datasets cover the period from **January 1 to May 31, 2023**, with a temporal resolution of **1 hour** (total of 3624 time steps for the 5-month period). They include traffic accident data, taxi order data, POI (Point of Interest) data, weather data, and road segment data. These datasets are processed into grid-based and graph-based formats for use in machine learning models, such as spatiotemporal graph neural networks.
@@ -22,7 +22,8 @@ The key statistics of the NYC and Chicago datasets are summarized in the table b
 
 ## 📂 File Structure and Details
 
-The datasets are structured within the `datasets` directory, with separate subdirectories for **NYC** and **Chicago**, each containing relevant data files tailored to their respective characteristics. Below is a concise summary of the files and their purposes:
+The datasets are structured within the `datasets` directory, with separate subdirectories for **NYC** and **Chicago**,You can download them from [BaiDu Drive](https://pan.baidu.com/s/1OoAEoJoL6bu7ah3vvUfbgw?pwd=kpxr).
+, each containing relevant data files tailored to their respective characteristics. Below is a concise summary of the files and their purposes:
 
 - **Directory Structure**:
   ```
@@ -32,6 +33,7 @@ The datasets are structured within the `datasets` directory, with separate subdi
   │   ├── grid_to_node_mapping.pkl
   │   ├── poi_similarity_adjacency.pkl
   │   ├── risk_similarity_adjacency.pkl
+  │   ├── grid_adjacency_matrix.pkl
   │   ├── high_risk_mask.pkl
   │   └── road_network_adjacency.pkl
   ├── CHICAGO/
@@ -39,6 +41,7 @@ The datasets are structured within the `datasets` directory, with separate subdi
   │   ├── grid_to_node_mapping.pkl
   │   ├── risk_similarity_adjacency.pkl
   │   ├── high_risk_mask.pkl
+  │   ├── grid_adjacency_matrix.pkl
   │   └── road_network_adjacency.pkl
   ```
 
@@ -46,7 +49,7 @@ The datasets are structured within the `datasets` directory, with separate subdi
 
 1. **spatiotemporal_features.pkl**
    - **Purpose**: Core dataset with spatiotemporal features for 2023 (hourly data, 3624 time steps).
-   - **Shape**: `(T, D, W, H)` where `T=3624`, `D=48`, `W` and `H` are grid dimensions (to be specified).
+   - **Shape**: `(T, D, W, H)` where `T=3624`, `D=48`, `W` and `H` are grid dimensions.
    - **Features**:
      - `0`: `risk` - Risk score (e.g., from accident data).
      - `1–24`: `time_period` - One-hot hour encoding (24 dims).
@@ -86,6 +89,10 @@ The datasets are structured within the `datasets` directory, with separate subdi
    - **Shape**: `(W*H, N)`.
    - **Details**: Links grid data to graph nodes (binary or weighted).
    - **Use**: Enables grid-graph data integration.
+   
+7. **grid_adjacency_matrix.pkl**
+   - **Purpose**: Captures spatial adjacency relationships between grid cells (e.g., 4-directional: up, down, left, right neighbors).
+   - **Shape**: (N, N): Number of valid grid cells .
 ### 📝 Notes
 - NYC includes POI-related files and features (D=48), while Chicago does not. Specifically, Chicago's spatiotemporal_features.pkl lacks the POI dimensions (33–39), resulting in D=41 (features 0–40 only, followed by inflow and outflow at indices 41–42). Adjust model inputs accordingly when working with the Chicago dataset.
 - Grid size `(W, H)` and node count `(N)` should be specified based on the specific dataset used.
@@ -93,6 +100,8 @@ The datasets are structured within the `datasets` directory, with separate subdi
 ---
 
 ## 🚀 Usage
+
+
 
 #### Sample Code
 To load and inspect the main dataset:
@@ -118,5 +127,6 @@ print("Risk shape:", risk.shape)
 2. Use `high_risk_mask.pkl` to focus on high-risk regions.
 3. Leverage `risk_similarity_adjacency.pkl`, `road_network_adjacency.pkl`, and `poi_similarity_adjacency.pkl` for graph-based modeling (e.g., with Graph Neural Networks).
 4. Map between grid and graph data using `grid_to_node_mapping.pkl`.
+
 
 
